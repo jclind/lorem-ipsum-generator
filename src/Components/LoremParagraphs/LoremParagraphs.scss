@@ -1,0 +1,31 @@
+@import '../../helpers.scss';
+
+.lorem-paragraphs {
+  position: relative;
+  .copy-overlay {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-size: toRem(18);
+    font-weight: 600;
+    color: $white;
+    gap: 0.5rem;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(173, 173, 173, 0.4);
+  }
+
+  &:hover {
+    cursor: pointer;
+    .copy-overlay {
+      display: flex;
+    }
+    .lorem-paragraph {
+      color: $tertiary-text !important;
+    }
+  }
+}
