@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import './Home.scss'
 import LoremParagraphs from '../LoremParagraphs/LoremParagraphs'
+import Shortcuts from '../Shortcuts'
 import { LoremIpsum } from 'lorem-ipsum'
 
 const Home = () => {
   const [loremP, setLoremP] = useState([])
   const [paragraphCount, setParagraphCount] = useState(1)
-
-  const [generateCount, setGenerateCount] = useState(0)
   useEffect(() => {
     setLoremText()
   }, [])
@@ -25,11 +24,10 @@ const Home = () => {
 
   const setLoremText = () => {
     let loremText = []
-    console.log(paragraphCount)
-    for (let i = 0; i < paragraphCount; i++) {
+    let count = paragraphCount || 1
+    for (let i = 0; i < count; i++) {
       loremText.push(lorem.generateParagraphs(1))
     }
-    console.log(loremText)
     setLoremP(loremText)
   }
 
@@ -46,8 +44,18 @@ const Home = () => {
     setLoremText()
   }
 
+  const [isCopied, setIsCopied] = useState(false)
+  const handleCopyText = text => {
+    navigator.clipboard.writeText(text)
+    setIsCopied(true)
+    setTimeout(() => {
+      setIsCopied(false)
+    }, 3000)
+  }
+
   return (
     <div className='home-page page'>
+      <Shortcuts copy={handleCopyText} loremP={loremP} />
       <div className='content-container'>
         <div className='inputs-container'>
           <label htmlFor='' className='paragraph-count-label'>
@@ -69,7 +77,11 @@ const Home = () => {
           </button>
         </div>
         <div className='lorem-container'>
-          <LoremParagraphs loremP={loremP} />
+          <LoremParagraphs
+            loremP={loremP}
+            isCopied={isCopied}
+            handleCopyText={handleCopyText}
+          />
         </div>
       </div>
     </div>

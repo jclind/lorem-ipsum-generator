@@ -1,36 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './LoremParagraphs.scss'
 
 import { BiCopy, BiCheck } from 'react-icons/bi'
 
-const LoremParagraphs = ({ loremP }) => {
-  const [isCoppied, setIsCoppied] = useState(false)
-
-  const handleCopyText = () => {
-    navigator.clipboard.writeText(loremP)
-    setIsCoppied(true)
-    setTimeout(() => {
-      setIsCoppied(false)
-    }, 3000)
-  }
-
+const LoremParagraphs = ({ loremP, handleCopyText, isCopied }) => {
   return (
-    <div className='lorem-paragraphs' onClick={handleCopyText}>
-      {/* <button className='copy-btn btn' onClick={handleCopyText}>
-        {!isCoppied ? (
-          <>
-            <BiCopy className='icon' />
-            Copy Text
-          </>
-        ) : (
-          <>
-            <BiCheck className='icon' />
-            Text Copied
-          </>
-        )}
-      </button> */}
+    <div
+      className='lorem-paragraphs'
+      onClick={() => handleCopyText(loremP.join('\n'))}
+    >
       <div className='copy-overlay'>
-        {!isCoppied ? (
+        {!isCopied ? (
           <>
             <BiCopy className='icon' />
             Copy Text
@@ -42,11 +22,13 @@ const LoremParagraphs = ({ loremP }) => {
           </>
         )}
       </div>
-      <p className='lorem-paragraph'>
-        {loremP.map(text => {
-          return <p>{text}</p>
-        })}
-      </p>
+      {loremP.map((text, idx) => {
+        return (
+          <p className='lorem-paragraph' key={idx}>
+            {text}
+          </p>
+        )
+      })}
     </div>
   )
 }
