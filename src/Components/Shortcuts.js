@@ -1,18 +1,27 @@
 import React, { useEffect } from 'react'
 
-const Shortcuts = ({ copy, loremP }) => {
+const Shortcuts = ({ copy, loremP, setPCount, generateText }) => {
   useEffect(() => {
-    const CTRL_C = e => {
-      if (e.ctrlKey && e.key === 'c') {
-        copy(loremP.join('\n'))
+    const handleShortcut = e => {
+      if (e.ctrlKey) {
+        if (e.key === 'c') {
+          copy(loremP.join('\n'))
+        }
+      }
+      if (e.altKey) {
+        if (!isNaN(e.key) && Number(e.key) !== 0) {
+          const num = Number(e.key)
+          setPCount(num)
+          generateText(num)
+        }
       }
     }
     // attach the event listener
-    document.addEventListener('keydown', CTRL_C)
+    document.addEventListener('keydown', handleShortcut)
 
     // remove the event listener
     return () => {
-      document.removeEventListener('keydown', CTRL_C)
+      document.removeEventListener('keydown', handleShortcut)
     }
   }, [copy, loremP])
   return <div></div>
