@@ -101,6 +101,7 @@
       }
     }
     .controls {
+      margin-top: 1rem;
       display: flex;
       justify-content: flex-end;
       padding: 1rem 0;
@@ -108,7 +109,14 @@
         border: 1px solid $secondary-background;
         color: $secondary-background;
         border-radius: 5px;
-        padding: 0.25rem 0.5rem;
+        padding: 0.5rem 0.75rem;
+        font-weight: 500;
+      }
+      .save-changes-btn.changed {
+        background: $primary;
+        color: $primary-text;
+        border: 1px solid $primary;
+        cursor: pointer;
       }
     }
   }

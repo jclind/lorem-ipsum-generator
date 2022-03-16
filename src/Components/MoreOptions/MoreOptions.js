@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Collapsible from 'react-collapsible'
 import './MoreOptions.scss'
 import { AiOutlineCaretDown, AiFillCaretUp } from 'react-icons/ai'
@@ -17,12 +17,64 @@ const MoreOptions = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
+  const [isChanged, setIsChanged] = useState(false)
+
   const [unitType, setUnitType] = useState(loremUnit)
 
   const [minSPerP, setMinSPerP] = useState(paragraphLowerBound)
   const [maxSPerP, setMaxSPerP] = useState(paragraphUpperBound)
   const [minWPerS, setMinWPerS] = useState(sentenceLowerBound)
   const [maxWPerS, setMaxWPerS] = useState(sentenceUpperBound)
+
+  useEffect(() => {
+    if (
+      unitType !== loremUnit ||
+      minSPerP !== paragraphLowerBound ||
+      maxSPerP !== paragraphUpperBound ||
+      minWPerS !== sentenceLowerBound ||
+      maxWPerS !== sentenceUpperBound
+    ) {
+      setIsChanged(true)
+    } else {
+      setIsChanged(false)
+    }
+  }, [unitType, minSPerP, maxSPerP, minWPerS, maxWPerS])
+
+  const saveChanges = () => {
+    if (minSPerP !== paragraphLowerBound) {
+      if (minSPerP > maxSPerP) {
+        return console.log(
+          "Min sentences per paragraph can't be greater than max"
+        )
+      }
+      setParagraphLowerBound(minSPerP)
+    }
+    if (maxSPerP !== paragraphUpperBound) {
+      if (minSPerP > maxSPerP) {
+        return console.log(
+          "Min sentences per paragraph can't be greater than max"
+        )
+      }
+      setParagraphUpperBound(maxSPerP)
+    }
+    if (minWPerS !== paragraphLowerBound) {
+      if (minWPerS > maxWPerS) {
+        return console.log("Min words per sentence can't be greater than max")
+      }
+      setSentenceLowerBound(minWPerS)
+    }
+    if (maxWPerS !== paragraphLowerBound) {
+      if (minWPerS > maxWPerS) {
+        return console.log("Min words per sentence can't be greater than max")
+      }
+      setSentenceUpperBound(maxWPerS)
+    }
+    if (unitType !== loremUnit) {
+      setLoremUnit(unitType)
+    }
+
+    setIsChanged(false)
+  }
 
   const validateNum = (num, setNum) => {
     if (num === '') return setNum('')
@@ -143,7 +195,17 @@ const MoreOptions = ({
             </label>
           </div>
           <div className='controls'>
-            <button className='save-changes-btn btn'>Save Changes</button>
+            <button
+              className={
+                isChanged
+                  ? 'save-changes-btn btn changed'
+                  : 'save-changes-btn btn'
+              }
+              disabled={!isChanged}
+              onClick={saveChanges}
+            >
+              Save Changes
+            </button>
           </div>
         </div>
       </Collapsible>
