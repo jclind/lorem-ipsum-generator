@@ -29,4 +29,35 @@ footer.footer {
       border-radius: 2px;
     }
   }
+  .bottom-footer {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    width: 90%;
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      a {
+        text-decoration: dotted;
+      }
+      .item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.25rem;
+
+        font-size: toRem(13);
+        color: $gray-900;
+      }
+    }
+    .copyright {
+      font-size: toRem(13);
+      color: $gray-900;
+      text-align: center;
+    }
+  }
 }
