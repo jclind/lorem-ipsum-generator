@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Home.scss'
+import MoreOptions from '../MoreOptions/MoreOptions'
 import LoremParagraphs from '../LoremParagraphs/LoremParagraphs'
 import Shortcuts from '../Shortcuts'
 import { loremIpsum } from 'lorem-ipsum'
@@ -7,6 +8,8 @@ import { loremIpsum } from 'lorem-ipsum'
 const Home = () => {
   const [loremP, setLoremP] = useState([])
   const [paragraphCount, setParagraphCount] = useState(1)
+
+  const [loremUnit, setLoremUnit] = useState('paragraph')
 
   const [paragraphLowerBound, setParagraphLowerBound] = useState(5)
   const [paragraphUpperBound, setParagraphUpperBound] = useState(8)
@@ -18,16 +21,6 @@ const Home = () => {
   }, [])
 
   const setLoremText = c => {
-    // const lorem = new LoremIpsum({
-    //   sentencesPerParagraph: {
-    //     max: maxSPerP,
-    //     min: minSPerP,
-    //   },
-    //   wordsPerSentence: {
-    //     max: maxWPerS,
-    //     min: minWPerS,
-    //   },
-    // })
     let loremText = []
     let count = c || paragraphCount
     for (let i = 0; i < count; i++) {
@@ -38,7 +31,7 @@ const Home = () => {
         paragraphUpperBound: paragraphUpperBound,
         sentenceLowerBound: sentenceLowerBound,
         sentenceUpperBound: sentenceUpperBound,
-        units: 'paragraphs',
+        units: loremUnit,
         random: Math.random,
       })
       console.log(text)
@@ -80,23 +73,37 @@ const Home = () => {
       />
       <div className='content-container'>
         <div className='inputs-container'>
-          <label htmlFor='' className='paragraph-count-label'>
-            <div className='text'>Paragraphs:</div>
-            <input
-              type='number'
-              className='paragraph-count-input input'
-              value={paragraphCount}
-              onChange={handleParagraphCountChange}
-              onBlur={e => {
-                if (e.target.value === '') {
-                  setParagraphCount(1)
-                }
-              }}
-            />
-          </label>
-          <button className='generate-btn btn' onClick={handleGenerateText}>
-            Generate Lorem Ipsum
-          </button>
+          <div className='main-inputs'>
+            <label htmlFor='' className='paragraph-count-label'>
+              <div className='text'>{loremUnit}s:</div>
+              <input
+                type='number'
+                className='paragraph-count-input input'
+                value={paragraphCount}
+                onChange={handleParagraphCountChange}
+                onBlur={e => {
+                  if (e.target.value === '') {
+                    setParagraphCount(1)
+                  }
+                }}
+              />
+            </label>
+            <button className='generate-btn btn' onClick={handleGenerateText}>
+              Generate Lorem Ipsum
+            </button>
+          </div>
+          <MoreOptions
+            loremUnit={loremUnit}
+            setLoremUnit={setLoremUnit}
+            paragraphLowerBound={paragraphLowerBound}
+            setParagraphLowerBound={setParagraphLowerBound}
+            paragraphUpperBound={paragraphUpperBound}
+            setParagraphUpperBound={setParagraphUpperBound}
+            sentenceLowerBound={sentenceLowerBound}
+            setSentenceLowerBound={setSentenceLowerBound}
+            sentenceUpperBound={sentenceUpperBound}
+            setSentenceUpperBound={setSentenceUpperBound}
+          />
         </div>
         <div className='lorem-container'>
           <LoremParagraphs

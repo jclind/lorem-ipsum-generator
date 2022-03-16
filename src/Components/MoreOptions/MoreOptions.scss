@@ -1,0 +1,86 @@
+@import '../../helpers.scss';
+.more-options {
+  max-width: 600px;
+  width: 100%;
+  .collapsible-trigger {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    color: $secondary-text;
+    font-size: toRem(14);
+    cursor: pointer;
+
+    border-bottom: 1px solid $secondary-background;
+
+    .icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  .settings-container {
+    display: flex;
+    flex-direction: column;
+    .lorem-units {
+      display: flex;
+      justify-content: space-between;
+      font-size: toRem(14);
+      color: $secondary-text;
+      padding-top: 2rem;
+      .options {
+        display: flex;
+        gap: 1rem;
+        .option {
+          padding: 0.5rem 1rem;
+          background: $secondary-background;
+          border-radius: 5px;
+          font-weight: 500;
+          cursor: pointer;
+          color: $gray-800;
+
+          &:hover {
+            background: $tertiary-background;
+            color: $primary-background;
+          }
+        }
+        .option.active {
+          color: $primary-text;
+          background: $primary;
+        }
+      }
+    }
+    .setting-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2rem;
+      label.setting-label {
+        display: flex;
+        justify-content: space-between;
+
+        .text {
+          font-size: toRem(14);
+          color: $secondary-text;
+        }
+        .min-max-container {
+          display: flex;
+          gap: 0.5rem;
+          .min-max-item {
+            max-width: 100px;
+            input {
+              background: $secondary-background;
+              outline: none;
+              border: none;
+              border-radius: 5px;
+              color: $secondary-text;
+              height: 30px;
+              width: 100%;
+              padding: 0 0.5rem;
+              box-sizing: border-box;
+            }
+          }
+        }
+      }
+    }
+  }
+}
