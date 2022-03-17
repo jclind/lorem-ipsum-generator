@@ -45,6 +45,7 @@ const MoreOptions = ({
     } else {
       setIsChanged(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unitType, minSPerP, maxSPerP, minWPerS, maxWPerS])
 
   const saveChanges = () => {

@@ -27,6 +27,8 @@ const Shortcuts = ({ copy, loremP, setUnitCount, generateText }) => {
     return () => {
       document.removeEventListener('keydown', handleShortcut)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [copy, loremP])
   return <div></div>
 }

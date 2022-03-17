@@ -23,10 +23,6 @@ const Home = () => {
   const [sentenceLowerBound, setSentenceLowerBound] = useState(5)
   const [sentenceUpperBound, setSentenceUpperBound] = useState(15)
 
-  useEffect(() => {
-    setLoremText(1)
-  }, [])
-
   const setLoremText = (c, type, minSPerP, maxSPerP, minWPerS, maxWPerS) => {
     console.log(type, minSPerP, maxSPerP, minWPerS, maxWPerS)
     let loremText = []
@@ -57,6 +53,11 @@ const Home = () => {
     }
     setLoremP(loremText)
   }
+
+  useEffect(() => {
+    setLoremText(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleUnitCountChange = e => {
     const val = e.target.value
