@@ -17,6 +17,8 @@ const MoreOptions = ({
   setSentenceUpperBound,
   setLoremText,
 }) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   const [isChanged, setIsChanged] = useState(false)
 
   const [unitType, setUnitType] = useState(loremUnit)
@@ -92,9 +94,11 @@ const MoreOptions = ({
     if (unitType !== loremUnit) {
       setLoremUnit(unitType)
       setIsChanged(false)
+      setIsOpen(false)
       return setLoremText(1, unitType)
     }
 
+    setIsOpen(false)
     setLoremText(null, unitType, minSPerP, maxSPerP, minWPerS, maxWPerS)
     setIsChanged(false)
   }
@@ -123,6 +127,8 @@ const MoreOptions = ({
             <AiFillCaretUp className='icon' />
           </div>
         }
+        handleTriggerClick={() => setIsOpen(!isOpen)}
+        open={isOpen}
       >
         <div className='settings-container'>
           <div className='lorem-units'>

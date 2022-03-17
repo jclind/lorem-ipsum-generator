@@ -7,8 +7,7 @@
   box-sizing: border-box;
 
   min-height: calc(100vh - #{$footer-height});
-  width: 100%;
-  max-width: 90%;
+  width: 90%;
   margin: 0 auto;
 
   .content-container {
@@ -114,6 +113,17 @@
         color: $primary-text;
         border: 1px solid $primary;
         cursor: pointer;
+      }
+    }
+    @media screen and (max-width: 500px) {
+      .inputs-container {
+        width: 90%;
+        .main-inputs {
+          gap: 1rem;
+          .generate-btn {
+            font-size: toRem(16);
+          }
+        }
       }
     }
   }

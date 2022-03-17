@@ -83,4 +83,36 @@
       }
     }
   }
+
+  @media screen and (max-width: 500px) {
+    .settings-container {
+      .lorem-units {
+        flex-direction: column;
+        gap: 0.5rem;
+        .options {
+          width: 100%;
+          gap: 0;
+          justify-content: space-between;
+          .option {
+          }
+        }
+      }
+      .setting-inputs {
+        label.setting-label {
+          flex-direction: column;
+          gap: 0.5rem;
+
+          .min-max-container {
+            .min-max-item {
+              max-width: 100%;
+              .text {
+                color: $tertiary-text;
+                margin-bottom: 0.25rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
