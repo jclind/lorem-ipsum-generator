@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Collapsible from 'react-collapsible'
 import './MoreOptions.scss'
 import { AiOutlineCaretDown, AiFillCaretUp } from 'react-icons/ai'
+import { useAlert } from 'react-alert'
 
 const MoreOptions = ({
   loremUnit,
@@ -14,9 +15,8 @@ const MoreOptions = ({
   setSentenceLowerBound,
   sentenceUpperBound,
   setSentenceUpperBound,
+  setLoremText,
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
   const [isChanged, setIsChanged] = useState(false)
 
   const [unitType, setUnitType] = useState(loremUnit)
@@ -25,6 +25,13 @@ const MoreOptions = ({
   const [maxSPerP, setMaxSPerP] = useState(paragraphUpperBound)
   const [minWPerS, setMinWPerS] = useState(sentenceLowerBound)
   const [maxWPerS, setMaxWPerS] = useState(sentenceUpperBound)
+
+  const minSPerPRef = useRef()
+  const maxSPerPRef = useRef()
+  const minWPerSRef = useRef()
+  const maxWPerSRef = useRef()
+
+  const alert = useAlert()
 
   useEffect(() => {
     if (
@@ -43,45 +50,61 @@ const MoreOptions = ({
   const saveChanges = () => {
     if (minSPerP !== paragraphLowerBound) {
       if (minSPerP > maxSPerP) {
-        return console.log(
-          "Min sentences per paragraph can't be greater than max"
-        )
+        minSPerPRef.current.style.border = '1px solid #dc3545'
+        maxSPerPRef.current.style.border = '1px solid #dc3545'
+        return alert.show('The minimum cannot exceed the maximum', {
+          type: 'error',
+        })
       }
       setParagraphLowerBound(minSPerP)
     }
     if (maxSPerP !== paragraphUpperBound) {
       if (minSPerP > maxSPerP) {
-        return console.log(
-          "Min sentences per paragraph can't be greater than max"
-        )
+        minSPerPRef.current.style.border = '1px solid #dc3545'
+        maxSPerPRef.current.style.border = '1px solid #dc3545'
+        return alert.show('The minimum cannot exceed the maximum', {
+          type: 'error',
+        })
       }
       setParagraphUpperBound(maxSPerP)
     }
     if (minWPerS !== paragraphLowerBound) {
       if (minWPerS > maxWPerS) {
-        return console.log("Min words per sentence can't be greater than max")
+        minWPerSRef.current.style.border = '1px solid #dc3545'
+        maxWPerSRef.current.style.border = '1px solid #dc3545'
+        return alert.show('The minimum cannot exceed the maximum', {
+          type: 'error',
+        })
       }
       setSentenceLowerBound(minWPerS)
     }
     if (maxWPerS !== paragraphLowerBound) {
       if (minWPerS > maxWPerS) {
-        return console.log("Min words per sentence can't be greater than max")
+        minWPerSRef.current.style.border = '1px solid #dc3545'
+        maxWPerSRef.current.style.border = '1px solid #dc3545'
+        return alert.show('The minimum cannot exceed the maximum', {
+          type: 'error',
+        })
       }
       setSentenceUpperBound(maxWPerS)
     }
     if (unitType !== loremUnit) {
       setLoremUnit(unitType)
+      setIsChanged(false)
+      return setLoremText(1, unitType)
     }
 
+    setLoremText(null, unitType, minSPerP, maxSPerP, minWPerS, maxWPerS)
     setIsChanged(false)
   }
 
   const validateNum = (num, setNum) => {
     if (num === '') return setNum('')
-    if (num && (isNaN(num) || Number(num) % 1 !== 0)) return
-    if (num === '0') return
-    if (Number(num) >= 100 || Number(num) <= 0) return
-    return setNum(num)
+    const currNum = Number(num)
+    if (currNum && (isNaN(currNum) || currNum % 1 !== 0)) return
+    if (currNum === '0') return
+    if (currNum >= 100 || currNum <= 0) return
+    return setNum(currNum)
   }
 
   return (
@@ -137,9 +160,14 @@ const MoreOptions = ({
                 <label className='min-s-per-p min-max-item'>
                   <div className='text'>Min:</div>
                   <input
-                    type='text'
+                    type='number'
                     value={minSPerP}
-                    onChange={e => validateNum(e.target.value, setMinSPerP)}
+                    onChange={e => {
+                      validateNum(e.target.value, setMinSPerP)
+                      minSPerPRef.current.style.border = 'none'
+                      maxSPerPRef.current.style.border = 'none'
+                    }}
+                    ref={minSPerPRef}
                     onBlur={() => {
                       if (!minSPerP) {
                         setMinSPerP(paragraphLowerBound)
@@ -150,9 +178,14 @@ const MoreOptions = ({
                 <label className='max-s-per-p min-max-item'>
                   <div className='text'>Max:</div>
                   <input
-                    type='text'
+                    type='number'
                     value={maxSPerP}
-                    onChange={e => validateNum(e.target.value, setMaxSPerP)}
+                    onChange={e => {
+                      validateNum(e.target.value, setMaxSPerP)
+                      maxSPerPRef.current.style.border = 'none'
+                      minSPerPRef.current.style.border = 'none'
+                    }}
+                    ref={maxSPerPRef}
                     onBlur={() => {
                       if (!maxSPerP) {
                         setMaxSPerP(paragraphUpperBound)
@@ -168,9 +201,14 @@ const MoreOptions = ({
                 <label className='min-s-per-p min-max-item'>
                   <div className='text'>Min:</div>
                   <input
-                    type='text'
+                    type='number'
                     value={minWPerS}
-                    onChange={e => validateNum(e.target.value, setMinWPerS)}
+                    onChange={e => {
+                      validateNum(e.target.value, setMinWPerS)
+                      minWPerSRef.current.style.border = 'none'
+                      maxWPerSRef.current.style.border = 'none'
+                    }}
+                    ref={minWPerSRef}
                     onBlur={() => {
                       if (!minWPerS) {
                         setMinWPerS(sentenceLowerBound)
@@ -181,9 +219,14 @@ const MoreOptions = ({
                 <label className='max-s-per-p min-max-item'>
                   <div className='text'>Max:</div>
                   <input
-                    type='text'
+                    type='number'
                     value={maxWPerS}
-                    onChange={e => validateNum(e.target.value, setMaxWPerS)}
+                    onChange={e => {
+                      validateNum(e.target.value, setMaxWPerS)
+                      maxWPerSRef.current.style.border = 'none'
+                      minWPerSRef.current.style.border = 'none'
+                    }}
+                    ref={maxWPerSRef}
                     onBlur={() => {
                       if (!maxWPerS) {
                         setMaxWPerS(sentenceUpperBound)

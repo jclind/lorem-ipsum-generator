@@ -50,3 +50,44 @@ body {
   border: none;
   color: $primary-text;
 }
+
+.alert {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+  // max-width: 1000px;
+  // width: 90%;
+  .content {
+    font-size: toRem(18);
+    font-weight: 500;
+  }
+  .close-alert-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .icon {
+      height: 25px;
+      width: 25px;
+    }
+  }
+}
+.alert.error {
+  background: $error-red;
+}
+.alert.success {
+  background: $success-green;
+  color: $primary-background;
+  .close-alert-btn {
+    color: $primary-background;
+  }
+}
+.alert.info {
+  background: $primary-text;
+  color: $primary-background;
+  .close-alert-btn {
+    color: $primary-background;
+  }
+}

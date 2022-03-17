@@ -69,13 +69,10 @@
     }
     .lorem-container {
       display: flex;
-      justify-self: center;
-      margin: 0 auto;
-      margin-top: 1rem;
+      margin: 1rem auto;
       .lorem-paragraphs {
         display: flex;
         flex-direction: column;
-        align-items: center;
         .copy-btn {
           display: flex;
           justify-content: center;

@@ -7,9 +7,16 @@ import { loremIpsum } from 'lorem-ipsum'
 
 const Home = () => {
   const [loremP, setLoremP] = useState([])
-  const [paragraphCount, setParagraphCount] = useState(1)
+  const [unitCount, setUnitCount] = useState(1)
 
   const [loremUnit, setLoremUnit] = useState('paragraph')
+  useEffect(() => {
+    if (loremUnit) {
+      setUnitCount(1)
+    }
+  }, [loremUnit])
+
+  // Add use effect to change paragraphCount (need to rename btw) to make more sense for each unit type
 
   const [paragraphLowerBound, setParagraphLowerBound] = useState(5)
   const [paragraphUpperBound, setParagraphUpperBound] = useState(8)
@@ -20,38 +27,44 @@ const Home = () => {
     setLoremText(1)
   }, [])
 
-  const setLoremText = c => {
+  const setLoremText = (c, type, minSPerP, maxSPerP, minWPerS, maxWPerS) => {
+    console.log(type, minSPerP, maxSPerP, minWPerS, maxWPerS)
     let loremText = []
-    let count = c || paragraphCount
+    let count = Number(c) ? c : unitCount
+    console.log(Number(c), c, unitCount, count)
     for (let i = 0; i < count; i++) {
       const text = loremIpsum({
         count: 1,
         format: 'plain',
-        paragraphLowerBound: paragraphLowerBound,
-        paragraphUpperBound: paragraphUpperBound,
-        sentenceLowerBound: sentenceLowerBound,
-        sentenceUpperBound: sentenceUpperBound,
-        units: loremUnit,
+        paragraphLowerBound: minSPerP || paragraphLowerBound,
+        paragraphUpperBound: maxSPerP || paragraphUpperBound,
+        sentenceLowerBound: minWPerS || sentenceLowerBound,
+        sentenceUpperBound: maxWPerS || sentenceUpperBound,
+        units: type || loremUnit,
         random: Math.random,
       })
-      console.log(text)
+      console.log({
+        count: 1,
+        format: 'plain',
+        paragraphLowerBound: minSPerP || paragraphLowerBound,
+        paragraphUpperBound: maxSPerP || paragraphUpperBound,
+        sentenceLowerBound: minWPerS || sentenceLowerBound,
+        sentenceUpperBound: maxWPerS || sentenceUpperBound,
+        units: type || loremUnit,
+        random: Math.random,
+      })
       loremText.push(text)
     }
     setLoremP(loremText)
   }
 
-  const handleParagraphCountChange = e => {
+  const handleUnitCountChange = e => {
     const val = e.target.value
 
     if ((isNaN(val) || val <= 0 || val % 1 !== 0 || val > 100) && val !== '')
       return
 
-    return setParagraphCount(val)
-  }
-
-  const handleGenerateText = c => {
-    const count = !isNaN(c) ? c : paragraphCount
-    setLoremText(count)
+    return setUnitCount(val)
   }
 
   const [isCopied, setIsCopied] = useState(false)
@@ -68,8 +81,8 @@ const Home = () => {
       <Shortcuts
         copy={handleCopyText}
         loremP={loremP}
-        setPCount={setParagraphCount}
-        generateText={handleGenerateText}
+        setUnitCount={setUnitCount}
+        generateText={setLoremText}
       />
       <div className='content-container'>
         <div className='inputs-container'>
@@ -79,16 +92,16 @@ const Home = () => {
               <input
                 type='number'
                 className='paragraph-count-input input'
-                value={paragraphCount}
-                onChange={handleParagraphCountChange}
+                value={unitCount}
+                onChange={handleUnitCountChange}
                 onBlur={e => {
                   if (e.target.value === '') {
-                    setParagraphCount(1)
+                    setUnitCount(1)
                   }
                 }}
               />
             </label>
-            <button className='generate-btn btn' onClick={handleGenerateText}>
+            <button className='generate-btn btn' onClick={() => setLoremText()}>
               Generate Lorem Ipsum
             </button>
           </div>
@@ -103,6 +116,7 @@ const Home = () => {
             setSentenceLowerBound={setSentenceLowerBound}
             sentenceUpperBound={sentenceUpperBound}
             setSentenceUpperBound={setSentenceUpperBound}
+            setLoremText={setLoremText}
           />
         </div>
         <div className='lorem-container'>
